@@ -20,7 +20,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue']);
 const editor = ref(null);
 const editorLoaded = ref(false);
-const content = ref(props.modelValue); // Gunakan ref untuk reaktivitas
+const content = ref(props.modelValue);
 
 const editorConfig = {
   placeholder: 'Enter a content here', 
@@ -30,7 +30,6 @@ const editorConfig = {
     'bulletedList', 'numberedList', 'blockQuote', '|',
     'undo', 'redo', '|',
     'alignment', 'fontSize', 'fontColor', 'fontBackgroundColor', '|',
-    'indent', 'outdent'
   ],
   image: {
     toolbar: ['imageStyle:full', 'imageStyle:side', '|', 'imageTextAlternative']

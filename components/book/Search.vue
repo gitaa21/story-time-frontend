@@ -13,18 +13,19 @@ import BaseInput from '../base/BaseInput.vue';
 
 const router = useRouter();
 const route = useRoute();
-const keyword = ref(route.query.keyword || ''); // Ambil nilai dari URL saat pertama kali
+const keyword = ref(route.query.keyword || ''); 
 
-// Update nilai keyword jika URL berubah
 watch(() => route.query.keyword, (newKeyword) => {
     keyword.value = newKeyword || '';
 });
 
-// Fungsi search
+watchEffect(() => {
+    keyword.value = route.query.keyword || '';
+});
+
 const searchStory = () => {
-    if (keyword.value.trim() !== '') {
-        router.push({ path: '/books', query: { keyword: keyword.value } });
-    }
+    router.push({ path: '/books', query: keyword.value.trim() ? { keyword: keyword.value } : {} });
 };
+
 
 </script>

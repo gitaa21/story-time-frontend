@@ -2,10 +2,9 @@
   <div class="ml-20 mr-20 pt-32">
     <form @submit.prevent="saveBook">
       <div class="flex mb-10">
-        <img src="~/assets/images/arrowleft.svg" alt="">
+        <NuxtLink to="/user"><img src="~/assets/images/arrowleft.svg" alt=""></NuxtLink>
         <h1 class="text-raisin-black ml-10 font-playfair"><b>{{ isEdit ? 'Edit Story' : 'Write Story' }}</b></h1>
       </div>
-
 
       <div class="my-4">
         <BaseInput v-model="bookData.title" type="text" label="Title" placeholder="Enter a story title" />
@@ -28,7 +27,7 @@
       <div class="my-4">
         <p class="text-sm font-medium text-gray-700">Content</p>
         <client-only>
-          <RichEditor :model-value="bookData.content" @update:modelValue="bookData.content = $event" />
+          <RichEditor  :model-value="bookData.content" @update:modelValue="bookData.content = $event" />
         </client-only>
       </div>
 
@@ -37,24 +36,22 @@
         <div
           class="relative border-2  rounded-lg w-full h-48 flex flex-wrap items-center justify-center  hover: transition p-3 gap-3">
 
-          <!-- Preview gambar yang sudah diupload -->
           <div v-for="(image, index) in bookData.images.filter(img => !img.isRemoved)" :key="index"
             class="relative w-24 h-24">
             <img :src="'http://127.0.0.1:8000' + image.url" alt="Book Cover"
               class="w-full h-full object-cover rounded-lg shadow-md" />
-            <button @click.prevent="removeImage(index)" class="bg-white rounded-full px-2 absolute top-1 right-1 text-raisin-black text-lg font-bold">
+            <button @click.prevent="removeImage(index)" class="bg-gray-asparagus text-white rounded-full px-2 absolute top-1 right-1 text-lg font-bold">
               X
             </button>
           </div>
           <div v-for="(image, index) in imagePreviews" :key="index + bookData.images.length" class="relative w-40 h-40">
             <img :src="image" alt="Book Cover" class="w-full h-full object-cover rounded-lg shadow-md" />
             <button @click.prevent="removeImage(index + bookData.images.length)"
-              class="bg-white rounded-full px-2 absolute top-1 right-1 text-raisin-black text-lg font-bold">
+              class="bg-gray-asparagus rounded-full px-2 absolute top-1 right-1 text-white text-lg font-bold">
               X
             </button>
           </div>
 
-          <!-- Tombol Upload -->
           <label for="file-input"
             class="flex flex-col items-center justify-center w-24 h-24 border border-gray-400 rounded-lg cursor-pointer hover:bg-gray-200 transition">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-500" fill="none" viewBox="0 0 24 24"
@@ -68,12 +65,11 @@
             class="hidden" />
         </div>
       </div>
-
-      <BaseButton type="submit" class="btn">Post Story</BaseButton>
+      <NuxtLink to="/user"><BaseButton type="submit" class="btn-white mr-5" >Cancel</BaseButton></NuxtLink>
+      <BaseButton type="submit" class="btn">{{ isEdit ? 'Update Story' : 'Post Story' }}</BaseButton>
     </form>
   </div>
 
-  <p v-if="isEdit">INI EDIT YA SIALAN</p>
 </template>
 
 <script setup>
@@ -94,7 +90,7 @@ const props = defineProps({
 console.log("iniiii data gambarrrrrrrrrrrrrrrr", props.book?.images || []);
 
 const store = useStore();
-const route = useRouter();
+const router = useRouter();
 
 const categoryList = ref([]);
 const newImages = ref([]);
@@ -119,8 +115,8 @@ const imageBook = (event) => {
   if (files.length) {
     Array.from(files).forEach((file) => {
       const imageUrl = URL.createObjectURL(file);
-      imagePreviews.value.push(imageUrl); // Simpan URL preview
-      newImages.value.push(file); // Simpan file untuk upload
+      imagePreviews.value.push(imageUrl); 
+      newImages.value.push(file); 
     });
   }
 };
@@ -144,7 +140,7 @@ onMounted(async () => {
       bookData.images = props.book.images || [];
     }
 
-    console.log("Loaded images:", bookData.images); // Debugging
+    console.log("Loaded images:", bookData.images);
   } catch (error) {
     console.error('Gagal mengambil kategori:', error);
   }
@@ -176,8 +172,10 @@ const saveBook = async () => {
     let response;
     if (props.isEdit) {
       response = await store.dispatch('book/editBook', { id: props.book.id, payload: formData });
+      await store.dispatch('auth/triggerPopup', 'Successfully edit a story');
     } else {
       response = await store.dispatch('book/addNewBook', formData);
+      await store.dispatch('auth/triggerPopup', 'Successfully post a story');
     }
 
     // Reset data setelah berhasil
@@ -188,7 +186,7 @@ const saveBook = async () => {
     newImages.value = [];
     imagePreviews.value = [];
 
-    // route.push(/books/${response.data.book_id});
+    router.push('/user')
   } catch (error) {
     console.error('Failed to save book:', error);
   }

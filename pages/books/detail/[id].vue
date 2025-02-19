@@ -4,7 +4,7 @@
       <p class="text-lg font-bold text-gray-asparagus">
         <NuxtLink to="/" class="hover:underline transition duration-300 ease-in-out">Home</NuxtLink>
         / 
-        <span v-if="selectedBook" class="hover:underline transition duration-300 ease-in-out">{{ selectedBook.title }}</span>
+        <span v-if="selectedBook" class="hover:underline transition duration-300 ease-in-out cursor-pointer">{{ selectedBook.title }}</span>
       </p>
 
     </div>
@@ -15,9 +15,10 @@
     <h3 class="mt-20 mb-10 font-playfair font-medium">Similar Story</h3>
     <div class="grid grid-cols-3 gap-6"
       v-if="bookDetail && bookDetail.related_books && bookDetail.related_books.length > 0">
-      <BookList :books="bookDetail.related_books.slice(0, 3)" :component-name="'all-story'" v-if="bookListStatus" />
+      <BookList :books="bookDetail.related_books.slice(0, 3)" :component-name="'my-story-index'" v-if="bookListStatus" />
     </div>
   </div>
+  <Popup v-if="showPopup" :message="popupMessage" type="success" @close="closePopup" />
 </template>
 
 <script setup>
@@ -31,6 +32,8 @@ const bookListStatus = ref(false);
 const bookList = ref();
 const bookDetail = ref(null);
 const selectedBookId = ref(route.params.id);
+const showPopup = computed(() => store.state.auth.showPopup);
+const popupMessage = computed(() => store.state.auth.popupMessage);
 
 const selectedBook = computed(() => { return bookDetail.value; });
 

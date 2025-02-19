@@ -1,7 +1,7 @@
 <template>
   <div>
     <form @submit.prevent="login">
-      <h1 class="text-raisin-black"><b>Login</b></h1>
+      <h1 class="text-raisin-black sm:text-3xl md:text-4xl lg:text-5xl"><b>Login</b></h1>
       <div class="my-4">
         <BaseInput class="input" type="text" identity="usernameOrEmail" label="Username/Email" placeholder="Enter your username or email"
           v-model="loginData.usernameOrEmail" />
@@ -69,13 +69,8 @@ const login = async () => {
 
     await store.dispatch('auth/getLoginData', payload);
     await store.dispatch('auth/triggerPopup', 'You have successfully logged in');
-    // Popup muncul di halaman index
-    // store.dispatch('auth/triggerPopup', {
-    //   message: 'You have successfully logged in!',
-    //   type: 'success'
-    // });
 
-    router.push('/'); // Arahkan ke halaman index
+    router.push('/'); 
   } catch (err) {
     errorMessage.value = 'Login failed. Please try again.';
     console.log(err);

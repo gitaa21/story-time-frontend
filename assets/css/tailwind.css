@@ -26,11 +26,15 @@
 }
 
 .btn:hover {
-  @apply bg-[#425241] duration-300 ease-in-out;
+  @apply bg-[#31472F] duration-300 ease-in-out;
 }
 
 .btn-white {
     @apply border-2 border-gray-asparagus rounded-md px-6 py-3  text-xl text-gray-asparagus;
+}
+
+.btn-white:hover {
+  @apply border-raisin-black text-raisin-black duration-300 ease-in-out;
 }
 
 body {

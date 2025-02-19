@@ -77,10 +77,12 @@
 <script setup>
 import { ref, reactive , watch} from 'vue';
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 import BaseButton from '../base/BaseButton.vue';
 import BaseInput from '../base/BaseInput.vue';
 
 const store = useStore();
+const router = useRouter();
 const fileInput = ref(null);
 const isModalOpen = ref(false);
 const imagePreviewUrl = ref(null); 
@@ -137,9 +139,8 @@ const updatePicture = async () => {
     const file = fileInput.value.files[0];
     imagePreviewUrl.value = URL.createObjectURL(file);
     try {
-      // Upload avatar dan dapatkan URL baru
       const uploadedImageUrl = await store.dispatch('auth/uploadAvatar', file);
-      return uploadedImageUrl; // Return URL untuk digunakan dalam updateProfile
+      return uploadedImageUrl; 
     } catch (error) {
       console.error('Error uploading avatar:', error);
       return null;
@@ -161,7 +162,6 @@ const updateProfile = async () => {
       updatedData.avatar_image = uploadedAvatar;
     }
 
-    // Hanya tambahkan password jika diisi
     if (userData.current_password && userData.new_password && userData.new_password_confirmation) {
       updatedData.current_password = userData.current_password;
       updatedData.new_password = userData.new_password;
@@ -171,6 +171,9 @@ const updateProfile = async () => {
     await store.dispatch('auth/updateUser', updatedData);
     await store.dispatch('auth/triggerPopup', 'Successfully edit your profile');
     closeModal(); 
+    router.push('/user').then(() => {
+      window.location.reload();
+    });
   } catch (error) {
     console.error("Failed to update profile:", error);
   }

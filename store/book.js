@@ -27,48 +27,31 @@ export default {
       }
     },
 
-    async getBookBySort(_, { sortOption, category, keyword }) {
+    async getBookBySort(_, { sortOption, category, keyword, page }) {
       const token = Cookies.get('jwt');
       try {
+        const params = {
+          page: page || 1, 
+          sort: sortOption ? sortOption.toLowerCase() : 'newest', 
+        };
+    
+        if (category) params.id_category = category.toLowerCase();
+        if (keyword) params.keyword = keyword.toLowerCase();
+    
         const { data } = await axios.get(baseURL + 'books', {
-          params: {
-            // category: category, // Send the category
-            // keyword: keyword,    // Send the search keyword
-            sort: sortOption.toLowerCase(),
-            id_category: category.toLowerCase(),
-            keyword: keyword.toLowerCase(),
-             // Send the selected sort option
-          },
+          params,
           headers: {
             Authorization: `Bearer ${token}`
           },
         });
-        console.log("dataaaaaaaaaaaaaaaaaa", data.data);
-
-        return data.data;
+    
+        console.log("Data fetched:", data.data);
+        return data;
       } catch (error) {
         console.error('Get Book Error:', error);
       }
     },
-
-    async getBookBySearch(_, keyword) {
-      const token = Cookies.get('jwt');
-      try {
-        const { data } = await axios.get(baseURL + 'books', {
-          params: {
-            keyword: keyword.toLowerCase(),   // Send the search keyword
-          },
-          headers: {
-            Authorization: `Bearer ${token}`
-          },
-        });
-        console.log("dataaaaaaaaaaaaaaaaaa", data.data);
-
-        return data.data;
-      } catch (error) {
-        console.error('Get Book Error:', error);
-      }
-    },  
+  
 
     async getCategoryData() {
       try {
@@ -82,8 +65,12 @@ export default {
     },
 
     async getBookDetail(_, bookId) {
+      const token = Cookies.get('jwt');
       try {
-        const { data } = await axios.get(baseURL + `books/${bookId}`);
+        const { data } = await axios.get(baseURL + `books/${bookId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }});
         console.log("Book Detail Data IDD Lagi:", bookId);
         console.log("Book Detail Data:", data);
         return data;
@@ -93,7 +80,7 @@ export default {
     },
 
     async getBookByUser(_, userId) {
-      console.log('Diterima di Vuex:', userId);  // Pastikan ID yang diterima sudah benar
+      console.log('Diterima di Vuex:', userId); 
       try {
         const token = Cookies.get('jwt');
         const { data } = await axios.get(baseURL + `books-users/${userId}`, {
@@ -101,15 +88,15 @@ export default {
             'Authorization': `Bearer ${token}`,
           },
         });
-        console.log('Data from API:', data);  // Pastikan data yang diterima sesuai
-        return data.data;
+        console.log('Data from API:', data); 
+        return data;
       } catch (error) {
         console.error('Get Book Detail Error:', error);
       }
     },
 
     async getBookByBookMark({ commit }) {
-      console.log('Diterima di Vuex:');  // Pastikan ID yang diterima sudah benar
+      console.log('Diterima di Vuex:'); 
       try {
         const token = Cookies.get('jwt');
         const { data } = await axios.get(baseURL + 'bookmarks', {
@@ -118,7 +105,7 @@ export default {
           }
         });
         console.log("dataaaaaaaaaaaaaaaaaa bookmarks", data.data)
-        return data.data;
+        return data;
       } catch (error) {
         console.error('Get Book Error:', error);
       }

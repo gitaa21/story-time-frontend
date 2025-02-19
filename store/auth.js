@@ -39,10 +39,15 @@ export default {
       Cookies.remove('tokenExpirationDate');
     },
 
-    setShowPopup(state, { show, message }) {
-      state.showPopup = show;
+    SET_POPUP(state, message) {
       state.popupMessage = message;
-    },
+  },
+  SHOW_POPUP(state) {
+      state.showPopup = true;
+  },
+  HIDE_POPUP(state) {
+      state.showPopup = false;
+  }
 
   },
 
@@ -144,8 +149,7 @@ export default {
     async uploadAvatar({ commit }, file) {
       try {
         const token = Cookies.get('jwt');
-        
-        // Pastikan file ada
+      
         if (!file) {
           throw new Error('No file selected');
         }
@@ -198,7 +202,12 @@ export default {
     },
 
     triggerPopup({ commit }, message) {
-      commit('setShowPopup', { show: true, message });
-    }
-  },
+      commit('SET_POPUP', message);
+      commit('SHOW_POPUP');
+     
+      setTimeout(() => {
+          commit('HIDE_POPUP');
+      }, 3000);  
+  }
+  }
 };
