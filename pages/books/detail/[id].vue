@@ -1,6 +1,6 @@
 <template>
   <div class="bg-issabelline pt-24">
-    <div class="ml-20 mr-20 pt-7 pb-7">
+    <div class="ml-28 mr-28 pt-7 pb-7">
       <p class="text-lg font-bold text-gray-asparagus">
         <NuxtLink to="/" class="hover:underline transition duration-300 ease-in-out">Home</NuxtLink>
         / 
@@ -9,7 +9,7 @@
 
     </div>
   </div>
-  <div class="ml-20 mr-20">
+  <div class="ml-28 mr-28">
     <BookDetail :book="bookDetail" v-if="bookDetail" />
 
     <h3 class="mt-20 mb-10 font-playfair font-medium">Similar Story</h3>

@@ -17,37 +17,69 @@
     </div>
 
     <div class="flex gap-12">
-        <div class="w-1/3 relative">
-            <div class="h-[600px] overflow-hidden mb-4">
-                <img :src="'http://127.0.0.1:8000' + book.images[currentIndex].url" alt="Displayed Image"
+        <div class="w-1/3 relative" @click="openModal">
+            <div class="h-[600px] overflow-hidden mb-4 cursor-pointer">
+                <img :src="'http://127.0.0.1:8000' + book.images[0].url" alt="Displayed Image"
                     class="w-full h-full object-cover rounded-xl" />
             </div>
             <div class="flex gap-4 overflow-hidden overflow-x-auto scrollbar-hide">
                 <div v-for="(image, index) in book.images" :key="image.id" class="w-5/12 shrink-0 cursor-pointer"
                     @click="currentIndex = index">
                     <img :src="'http://127.0.0.1:8000' + image.url" alt="Thumbnail"
-                        class="w-full h-full object-cover rounded-lg border-2"
-                        :class="currentIndex === index ? 'opacity-100' : 'border-transparent opacity-50'" />
+                        class="w-full h-full object-cover rounded-lg border-2 transition-opacity duration-300"
+                        :class="index === 0 ? 'opacity-100' : 'opacity-30'" />
                 </div>
             </div>
-            <BaseButton class="absolute top-1/2 left-0 transform -translate-y-1/2 ml-3 text-white text-5xl"
-                @click="prevSlide">
-                < </BaseButton>
-                    <BaseButton class="absolute top-1/2 right-0 transform -translate-y-1/2 mr-3 text-white text-5xl"
-                        @click="nextSlide">
-                        >
-                    </BaseButton>
+
         </div>
         <div class="w-2/3">
             <div v-html="book.content"></div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div v-if="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
+        <div class="relative bg-white p-10 rounded-lg shadow-lg max-w-3xl w-full">
+            <button @click="closeModal" class="absolute top-2 right-2 text-gray-700 hover:text-gray-900 text-2xl">
+                ✕
+            </button>
+
+            <div class="h-[400px] overflow-hidden mb-4">
+                <img :src="'http://127.0.0.1:8000' + book.images[currentIndex].url" alt="Displayed Image"
+                    class="w-full h-full object-cover rounded-xl" />
+            </div>
+
+            <div class="grid grid-cols-4 gap-2 max-h-[200px] overflow-y-auto">
+                <div v-for="(image, index) in book.images" :key="image.id" class="h-[100px] cursor-pointer"
+                    @click="currentIndex = index">
+                    <img :src="'http://127.0.0.1:8000' + image.url" alt="Thumbnail"
+                        class="w-full h-full object-cover rounded-lg border-2"
+                        :class="currentIndex === index ? 'border-gray-900' : 'border-transparent opacity-50'" />
+                </div>
+            </div>
+
+            <div class="flex justify-between mt-4">
+                <BaseButton class="text-2xl px-4" @click="prevSlide">←</BaseButton>
+                <BaseButton class="text-2xl px-4" @click="nextSlide">→</BaseButton>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useStore } from 'vuex';
 
+const isModalOpen = ref(false);
+
+const openModal = () => {
+    isModalOpen.value = true;
+};
+
+const closeModal = () => {
+    isModalOpen.value = false;
+};
 
 const store = useStore();
 
@@ -55,8 +87,6 @@ const props = defineProps({
     bookId: String,
     book: Object
 });
-
-console.log("data bukku", props.book.image);
 
 const currentIndex = ref(0);
 
@@ -95,15 +125,15 @@ const handleBookmark = async (book) => {
 };
 
 function formatDate(date) {
-  if (!date) return "-";
-  
-  const parsedDate = new Date(date);
-  if (isNaN(parsedDate)) {
-    console.error('Invalid Date:', date);
-    return "-";
-  }
+    if (!date) return "-";
 
-  return parsedDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+    const parsedDate = new Date(date);
+    if (isNaN(parsedDate)) {
+        console.error('Invalid Date:', date);
+        return "-";
+    }
+
+    return parsedDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 </script>
 

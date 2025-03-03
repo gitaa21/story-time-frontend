@@ -1,6 +1,6 @@
 <template>
   <WebHeader />
-    <div class="flex items-center justify-center gap-12 ml-20 mr-20 pt-32">
+    <div class="flex items-center justify-center gap-12 ml-28 mr-20 pt-32">
       <img src="~/assets/images/error.svg" class="w-6/12" alt="">
       <div class="text-center">
         <h1 class="text-8xl font-playfair"><b>{{ error.statusCode }}</b></h1>

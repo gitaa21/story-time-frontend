@@ -1,36 +1,36 @@
 <template>
     <div>
         <Hero />
-        <div class="mr-20 ml-20 mt-20 pb-6 border-b-2 mb-8 flex justify-between">
+        <div class="mr-28 ml-28 mt-20 pb-6 border-b-2 mb-8 flex justify-between">
             <h2 class="font-playfair text-raisin-black">
                 <b>Latest Story</b>
             </h2>
-            <NuxtLink to="/books" class="flex items-center">
-                <h5 class="whitespace-nowrap text-quartz">Explore More</h5>
+            <NuxtLink to="/books" class="flex items-center hover:underline transition duration-300 ease-in-out">
+                <h5 class="whitespace-nowrap text-quartz ">Explore More</h5>
                 <img src="@/assets/images/arrow.svg" alt="">
             </NuxtLink>
         </div>
 
         <div class="flex space-x-7 w-full overflow-x-scroll scrollbar-hide mt-10">
-            <div class="shrink-0 w-12"></div>
-            <div class="min-w-[183%] flex gap-6">
+            <div class="shrink-0 w-20"></div>
+            <div class="min-w-[176%] flex gap-7">
                 <BookList :books="bookList.slice(0, 6)" :component-name="'my-story-index'"  v-if="bookListStatus" />
             </div>
-            <div class="shrink-0 w-12"></div>
+            <div class="shrink-0 w-20"></div>
         </div>
 
         <div v-if="comedyBooks.books.length">
-            <div class="mr-20 ml-20 mt-20 pb-6 border-b-2 mb-8 flex justify-between">
+            <div class="ml-28 mr-28 mt-20 pb-6 border-b-2 mb-8 flex justify-between">
                 <h2 class="font-playfair text-raisin-black">
                     <b>{{ comedyBooks.category_name }}</b>
                 </h2>
-                <NuxtLink :to="`/books?category=${comedyBooks.category_id}`" class="flex items-center">
+                <NuxtLink :to="`/books?category=${comedyBooks.category_id}`" class="flex items-center hover:underline transition duration-300 ease-in-out">
                     <h5 class="whitespace-nowrap text-quartz">Explore More</h5>
                     <img src="@/assets/images/arrow.svg" alt="">
                 </NuxtLink>
             </div>
 
-            <div class="grid grid-cols-3 mr-20 ml-20 gap-6">
+            <div class="grid grid-cols-3 ml-28 mr-28 gap-7">
                 <div class="col-span-2 row-span-2">
                     <BookList :books="comedyBooks.books.slice(0, 1)" :component-name="'my-story-category'" :size="'special'" v-if="bookListStatus" />
                 </div>
@@ -41,31 +41,31 @@
         </div>
 
         <div v-if="romanceBooks.books.length">
-            <div class="mr-20 ml-20 mt-20 pb-6 border-b-2 mb-8 flex justify-between">
+            <div class="ml-28 mr-28 mt-20 pb-6 border-b-2 mb-8 flex justify-between">
                 <h2 class="font-playfair text-raisin-black">
                     <b>{{ romanceBooks.category_name }}</b>
                 </h2>
-                <NuxtLink :to="`/books?category=${romanceBooks.category_id}`" class="flex items-center">
+                <NuxtLink :to="`/books?category=${romanceBooks.category_id}`" class="flex items-center hover:underline transition duration-300 ease-in-out">
                     <h5 class="whitespace-nowrap text-quartz">Explore More</h5>
                     <img src="@/assets/images/arrow.svg" alt="">
                 </NuxtLink>
             </div>
-            <div class="grid grid-cols-3 gap-6 mr-20 ml-20">
+            <div class="grid grid-cols-3 gap-7 ml-28 mr-28">
                 <BookList :books="romanceBooks.books.slice(0, 3)" :component-name="'my-story-category'" v-if="bookListStatus" />
             </div>
         </div>
 
         <div v-if="horrorBooks.books.length">
-            <div class="mr-20 ml-20 mt-20 pb-6 border-b-2 mb-8 flex justify-between">
+            <div class="ml-28 mr-28 mt-20 pb-6 border-b-2 mb-8 flex justify-between">
                 <h2 class="font-playfair text-raisin-black">
                     <b>{{ horrorBooks.category_name }}</b>
                 </h2>
-                <NuxtLink :to="`/books?category=${horrorBooks.category_id}`" class="flex items-center">
+                <NuxtLink :to="`/books?category=${horrorBooks.category_id}`" class="flex items-center hover:underline transition duration-300 ease-in-out">
                     <h5 class="whitespace-nowrap text-quartz">Explore More</h5>
                     <img src="@/assets/images/arrow.svg" alt="">
                 </NuxtLink>
             </div>
-            <div class="grid grid-cols-3 mr-20 ml-20 gap-6">
+            <div class="grid grid-cols-3 ml-28 mr-28 gap-7">
                 <div class="col-span-2">
                     <BookList :books="horrorBooks.books.slice(0, 1)" :component-name="'my-story-category'" :size="'special'" v-if="bookListStatus" />
                 </div>
@@ -76,12 +76,12 @@
         </div>
 
         <div>
-            <div class="mr-20 ml-20 mt-20 pb-6 border-b-2 mb-8 flex justify-between">
+            <div class="ml-28 mr-28 mt-20 pb-6 border-b-2 mb-8 flex justify-between">
                 <h2 class="font-playfair text-raisin-black">
                     <b>More Category</b>
                 </h2>
             </div>
-            <div class="flex whitespace-nowrap mr-20 ml-20 gap-8 overflow-x-scroll scrollbar-hide">
+            <div class="flex whitespace-nowrap ml-28 mr-28 gap-8 overflow-x-scroll scrollbar-hide">
                 <NuxtLink v-if="categoryList && categoryList.length" :to="`/books?category=${category.id}`" v-for="category in categoryList.filter(cat => !['Horror', 'Romance', 'Comedy'].includes(cat.name))" :key="category.id">
                     <div class="bg-issabelline rounded-md hover:bg-gray-asparagus/30 transition duration-300 ease-in-out">
                         <p class="p-9 text-xl text-gray-asparagus hover:text-raisin-black">{{ category.name }}</p>
@@ -102,9 +102,9 @@ import Popup from '~/components/book/Popup.vue';
 const store = useStore();
 
 const showPopup = computed(() => store.state.auth.showPopup);
-console.log("POPUPPP", showPopup.value)
+console.log("POPUPPP indexxxxxxxxx", showPopup.value)
 const popupMessage = computed(() => store.state.auth.popupMessage);
-console.log("Pesannnnn", popupMessage.value)
+console.log("Pesannnnn indexxxxxxxxx", popupMessage.value)
 
 const bookListStatus = ref(false);
 const bookList = ref([]);

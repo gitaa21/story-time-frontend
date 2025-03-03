@@ -4,16 +4,16 @@
       :src="(user.avatar_image ? `http://127.0.0.1:8000${user.avatar_image}` : 'https://i.pinimg.com/736x/88/78/c4/8878c46bb3bbc687093168a0fbb91ab5.jpg')"
       alt="Profile" class="rounded-full object-cover w-12 h-12" />
     <BaseButton class="flex items-center" @click="toggleDropdown">
-      <p class="ml-2 mr-2 text-xl"><b>{{ user.username }}</b></p>
+      <p class="ml-2 mr-2 text-xl"><b>{{ user.name }}</b></p>
       <img src="@/assets/images/dropdown.svg" alt="Dropdown Icon" />
     </BaseButton>
     <ul v-show="isDropdownOpen"
       class="mt-36 absolute p-1 pr-10 bg-white border border-gray-200 shadow-lg rounded-lg rounded-tl-none z-50 b-10 whitespace-nowrap">
       <li>
-        <NuxtLink to="/user" class="block px-4 py-2 ">My Profile</NuxtLink>
+        <NuxtLink to="/user" class="block px-4 py-2 " @click="closeDropdown">My Profile</NuxtLink>
       </li>
       <li>
-        <BaseButton @click="openModal" class="block px-4 py-2">Logout</BaseButton>
+        <BaseButton class="block px-4 py-2" @click="openModalAndCloseDropdown" >Logout</BaseButton>
       </li>
     </ul>
   </div>
@@ -44,6 +44,15 @@ const isModalOpen = ref(false);
 
 const toggleDropdown = () => {
   isDropdownOpen.value = !isDropdownOpen.value;
+};
+
+const closeDropdown = () => {
+  isDropdownOpen.value = false;
+};
+
+const openModalAndCloseDropdown = () => {
+  isModalOpen.value = true;
+  closeDropdown(); 
 };
 
 onMounted(async () => {

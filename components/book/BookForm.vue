@@ -1,5 +1,5 @@
 <template>
-  <div class="ml-20 mr-20 pt-32">
+  <div class="ml-28 mr-28 pt-32">
     <form @submit.prevent="saveBook">
       <div class="flex mb-10">
         <NuxtLink to="/user"><img src="~/assets/images/arrowleft.svg" alt=""></NuxtLink>

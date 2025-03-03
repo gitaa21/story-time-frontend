@@ -1,21 +1,15 @@
 <template>
   <div class="flex justify-center space-x-2 mt-4">
-    <BaseButton
-      v-for="page in visiblePages"
-      :key="page"
-      @click="changePage(page)"
-      :class="['px-4 py-2 rounded', currentPage === page ? 'bg-gray-asparagus text-white' : 'bg-gray-100 hover:bg-gray-200']"
-    >
+    <BaseButton v-for="page in visiblePages" :key="page" @click="changePage(page)" class="hover:bg-gray-asparagus hover:text-white duration-300 disabled:opacity-50"
+      :class="['px-4 py-2 rounded', currentPage === page ? 'bg-gray-asparagus text-white' : 'bg-gray-100 hover:bg-gray-200']">
       {{ page }}
     </BaseButton>
 
-    <BaseButton
-      @click="changePage(currentPage + 1)"
-      :disabled="currentPage >= lastPage"
-      class="px-3 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
-    >
+    <BaseButton @click="changePage(currentPage + 1)" :disabled="currentPage >= lastPage"
+      class="px-3 py-2 rounded bg-issabelline text-raisin-black hover:bg-gray-asparagus hover:text-white duration-300 disabled:opacity-50">
       Next
     </BaseButton>
+
   </div>
 </template>
 

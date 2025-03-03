@@ -1,6 +1,6 @@
 <template>
   <div class="fixed w-full z-50 bg-white shadow-md pb-5">
-    <div class="flex ml-20 mt-5 justify-between mr-20">
+    <div class="flex ml-28 mt-5 justify-between mr-28">
       <NuxtLink to="/" class="flex-shrink-0">
         <img src="@/assets/images/logo.svg" alt="Logo">
       </NuxtLink>

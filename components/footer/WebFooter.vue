@@ -1,6 +1,6 @@
 <template>
     <div class="border-t-2 border-quartz mt-20">
-        <div class="flex justify-between mr-20 ml-20 mt-5 mb-5">
+        <div class="flex justify-between ml-28 mr-28 mt-5 mb-5">
             <p>&copy; 2024 PT. Timedoor Indonesia. All rights reserved.</p>
             <div class="flex gap-6 text-raisin-black">
                 <NuxtLink to="https://facebook.com" target="_blank">

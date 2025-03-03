@@ -27,6 +27,21 @@ export default {
       }
     },
 
+    async getBookDetail(_, bookId) {
+      const token = Cookies.get('jwt');
+      try {
+        const { data } = await axios.get(baseURL + `books/${bookId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }});
+        console.log("Book Detail Data IDD Lagi:", bookId);
+        console.log("Book Detail Data:", data);
+        return data;
+      } catch (error) {
+        console.error('Get Book Detail Error:', error);
+      }
+    },
+
     async getBookBySort(_, { sortOption, category, keyword, page }) {
       const token = Cookies.get('jwt');
       try {
@@ -52,7 +67,6 @@ export default {
       }
     },
   
-
     async getCategoryData() {
       try {
         const { data } = await axios.get(baseURL + 'categories')
@@ -64,52 +78,48 @@ export default {
       }
     },
 
-    async getBookDetail(_, bookId) {
+    async getBookByUser(_, { userId, page }) {
       const token = Cookies.get('jwt');
       try {
-        const { data } = await axios.get(baseURL + `books/${bookId}`, {
+        const params = {
+          page: page || 1, // Default page ke 1 jika tidak diberikan
+        };
+    
+        const { data } = await axios.get(`${baseURL}books-users`, {
+          params,
           headers: {
-            Authorization: `Bearer ${token}`
-          }});
-        console.log("Book Detail Data IDD Lagi:", bookId);
-        console.log("Book Detail Data:", data);
-        return data;
-      } catch (error) {
-        console.error('Get Book Detail Error:', error);
-      }
-    },
-
-    async getBookByUser(_, userId) {
-      console.log('Diterima di Vuex:', userId); 
-      try {
-        const token = Cookies.get('jwt');
-        const { data } = await axios.get(baseURL + `books-users/${userId}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         });
-        console.log('Data from API:', data); 
+    
+        console.log("Data fetched (User Books):", data.data);
         return data;
       } catch (error) {
-        console.error('Get Book Detail Error:', error);
+        console.error('Get Book By User Error:', error);
       }
     },
-
-    async getBookByBookMark({ commit }) {
-      console.log('Diterima di Vuex:'); 
+    
+    async getBookByBookMark(_, { page }) {
+      const token = Cookies.get('jwt');
       try {
-        const token = Cookies.get('jwt');
-        const { data } = await axios.get(baseURL + 'bookmarks', {
+        const params = {
+          page: page || 1, 
+        };
+    
+        const { data } = await axios.get(`${baseURL}bookmarks`, {
+          params,
           headers: {
-            'Authorization': `Bearer ${token}`,
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
-        console.log("dataaaaaaaaaaaaaaaaaa bookmarks", data.data)
+    
+        console.log("Data fetched (Bookmarks):", data.data);
         return data;
       } catch (error) {
-        console.error('Get Book Error:', error);
+        console.error('Get Book By Bookmark Error:', error);
       }
     },
+    
 
     async getBookByCategory() {
       const token = Cookies.get('jwt');

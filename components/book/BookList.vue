@@ -3,7 +3,7 @@
         <div>
             <div class="overflow-hidden min-h-[300px] relative">
                 <NuxtLink :to="`/books/detail/${book.id}`">
-                    <div :class="size === 'special' ? 'h-[700px]' : 'h-[350px]'"
+                    <div :class="size === 'special' ? 'h-[800px]' : 'h-[450px]'"
                         class="overflow-hidden rounded-t-xl rounded-xl">
                         <img class="w-full h-full object-cover group-hover:opacity-75 duration-300 ease-in-out "
                             :src="book.images && book.images[0] ? 'http://127.0.0.1:8000' + book.images[0].url : ''"
@@ -23,7 +23,7 @@
                 </div>
                 
 
-                <div class="absolute bottom-7 right-7 flex space-x-4 group-hover:scale-105 transition-transform">
+                <div class="absolute bottom-7 right-7 flex space-x-4 group-hover:bottom-8 transition-all duration-500">
                     <NuxtLink v-if="componentName === 'my-story'" :to="`/books/update/${book.id}`">
                         <div class="rounded-full p-2 flex items-center justify-center bg-gray-asparagus">
                             <img class="h-10 w-10" src="@/assets/images/edit.svg" alt="Edit">
@@ -37,17 +37,6 @@
                         <FontAwesomeIcon :icon="book.is_bookmarked ? ['fas', 'bookmark'] : ['far', 'bookmark']"
                             class="text-white text-3xl " />
                     </div>
-
-
-                    <!-- <div v-if="componentName === 'my-story-index'" @click="handleBookmark(book)" :class="{
-                        'bg-raisin-black': book.is_bookmarked,
-                        'bg-gray-asparagus': !book.is_bookmarked
-                    }" class="rounded-full px-4 py-3 flex items-center justify-center cursor-pointer">
-                        <FontAwesomeIcon :icon="book.is_bookmarked ? ['fas', 'bookmark'] : ['far', 'bookmark']"
-                            class="text-white text-3xl " />
-                    </div> -->
-
-
 
                     <div v-if="componentName === 'my-story'" @click="deleteBook(book.id)"
                         class="rounded-full p-2 flex items-center justify-center bg-gray-asparagus cursor-pointer">
@@ -81,7 +70,7 @@
                     <div v-html="book.content" class="mt-1 text-quartz text-justify line-clamp-3"></div>
 
                     <div class="flex justify-between mt-2">
-                        <div v-if="componentName === 'my-story'" class="ml-4">
+                        <div v-if="componentName === 'my-story'" >
                                 <p class="rounded-md px-3 py-1 text-gray-asparagus bg-issabelline">{{ book.category }}
                                 </p>
                         </div>
@@ -136,7 +125,6 @@ const handleBookmark = async (book) => {
             await store.dispatch("bookmark/addBookmark", book);
             store.commit("bookmark/ADD_BOOKMARK", book);
             await store.dispatch('auth/triggerPopup', 'Successfully added story to bookmarks');
-
             emit("updateBookmarks", { type: "add", book });
         }
         book.is_bookmarked = !book.is_bookmarked;
@@ -145,8 +133,6 @@ const handleBookmark = async (book) => {
         alert("Failed to update bookmark!");
     }
 };
-
-
 
 // const openModal = (bookId) => {
 //     selectedBookId.value = bookId;  
@@ -170,7 +156,9 @@ const deleteBook = async (id) => {
         await store.dispatch('book/destroyBook', id);
         await store.dispatch('auth/triggerPopup', 'Successfully delete a story');
         isModalOpen.value = false;
-        router.push('/');
+        router.push('/user').then(() => {
+      window.location.reload();
+    });;
     } catch (error) {
         console.error("Failed to delete book:", error);
     }

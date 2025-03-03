@@ -30,7 +30,7 @@
 }
 
 .btn-white {
-    @apply border-2 border-gray-asparagus rounded-md px-6 py-3  text-xl text-gray-asparagus;
+  @apply border-2 border-gray-asparagus rounded-md px-6 py-3  text-xl text-gray-asparagus;
 }
 
 .btn-white:hover {
